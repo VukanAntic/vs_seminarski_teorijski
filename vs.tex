@@ -5,12 +5,14 @@
 \usepackage{url}
 \usepackage[T2A]{fontenc} % enable Cyrillic fonts
 \usepackage[utf8]{inputenc} % make weird characters work
-\usepackage{graphicx};
+\usepackage{graphicx}
 
-\documentclass{article}
 \usepackage{tikz}
 \usetikzlibrary{positioning}
 \usetikzlibrary{calc}
+
+\usetikzlibrary{shapes.geometric}
+
 
 
 \usepackage[english,serbian]{babel}
@@ -57,15 +59,6 @@
   title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
 
-\tikzset{relation/.style={%
-           shape=diamond,draw=relation@colour!50!gray,
-           ultra thick,fill=relation@colour!25!white,
-           minimum height=2em},
-         entity/.style={%
-           shape=rectangle,draw=entity@colour!50!gray,
-           ultra thick,fill=entity@colour!25!white,
-           minimum height=2em}}
-
 \begin{document}
 
 \title{Naslov seminarskog rada\\ \small{Seminarski rad u okviru kursa\\Metodologija stručnog i naučnog rada\\ Matematički fakultet}}
@@ -107,7 +100,7 @@ command/.style={entity, draw=red!60, fill=red!5, very thick, minimum width=3cm,m
 \node (2_ne) [right=of 3] {ne};
 \node (2_da) at ($(2)!0.6!(3)$) {da};
 \node[command] (5) [below=of 4] {max = c;};
-\node[command] (6)  [below=of 5] { printf("\%d\n", max); };
+\node[command] (6) [below=of 5] {printf("\%d\n", max);};
 \node (4_ne) [left=of 5] {ne};
 \node (4_da) at ($(4)!0.6!(5)$) {da};
 
@@ -132,6 +125,40 @@ command/.style={entity, draw=red!60, fill=red!5, very thick, minimum width=3cm,m
 %\draw[->] (1) -- (2) {true};
 %\draw[->] (2) -- (3);
 %\draw[->] (3) .. controls +(down:17mm) and +(right:7mm) .. (4);
+\end{tikzpicture}
+
+\newpage
+
+% Pokrivenost
+% https://tex.stackexchange.com/questions/112412/connecting-nodes-with-brace-in-tikz
+% https://tikz.dev/tikz-arrows
+
+\begin{tikzpicture}[
+shorten >=1pt,
+node/.style={ellipse, draw, fill=cyan!10, thick, minimum width =7cm, minimum height = 1.5cm},
+myline/.style={dotted, cyan!40,->>, ultra thick},
+]
+
+\node[node] (1) {Pokrivenost putanja};
+\node[node] (2) [below=of 1] {Pokrivenost višestrukih uslova};
+\node[node] (3) [below=of 2] {Pokrivenost uslova};
+\node[node] (4) [below=of 3] {Pokrivenost odluka};
+\node[node] (5) [below=of 4] {Pokrivenost naredbi};
+
+
+\draw[myline]  (1.west) to [bend right=40] (2.west);
+\draw[myline]  (1.east) to [bend left=40] (2.east);
+\draw[myline]  (2.west) to [bend right=40] (3.west);
+\draw[myline]  (2.east) to [bend left=40] (3.east);
+\draw[myline]  (3.west) to [bend right=40] (4.west);
+\draw[myline]  (3.east) to [bend left=40] (4.east);
+\draw[myline]  (4.west) to [bend right=40] (5.west);
+\draw[myline]  (4.east) to [bend left=40] (5.east);
+
+
+
+
+
 \end{tikzpicture}
 
 
