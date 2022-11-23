@@ -5,11 +5,13 @@
 \usepackage{url}
 \usepackage[T2A]{fontenc} % enable Cyrillic fonts
 \usepackage[utf8]{inputenc} % make weird characters work
-\usepackage{graphicx}
+\usepackage{graphicx};
 
 \documentclass{article}
 \usepackage{tikz}
 \usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+
 
 \usepackage[english,serbian]{babel}
 %\usepackage[english,serbianc]{babel} %ukljuciti babel sa ovim opcijama, umesto gornjim, ukoliko se koristi cirilica
@@ -55,6 +57,15 @@
   title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
 
+\tikzset{relation/.style={%
+           shape=diamond,draw=relation@colour!50!gray,
+           ultra thick,fill=relation@colour!25!white,
+           minimum height=2em},
+         entity/.style={%
+           shape=rectangle,draw=entity@colour!50!gray,
+           ultra thick,fill=entity@colour!25!white,
+           minimum height=2em}}
+
 \begin{document}
 
 \title{Naslov seminarskog rada\\ \small{Seminarski rad u okviru kursa\\Metodologija stručnog i naučnog rada\\ Matematički fakultet}}
@@ -80,21 +91,38 @@
 
 % https://tex.stackexchange.com/questions/251642/draw-arrows-between-nodes-with-tikz
 % node distance=2cm
+
+\usetikzlibrary{er}
+
 \begin{tikzpicture}[
-node distance=2cm,
-roundnode/.style={circle, draw=green!60, fill=green!5, very thick, minimum size=3cm},
-squarednode/.style={rectangle, draw=red!60, fill=red!5, very thick, minimum width=5cm,minimum height=2cm},
+shorten >=1pt,
+if_statement/.style={relationship, draw=green!60, fill=green!5, very thick, minimum size=0.2},
+command/.style={entity, draw=red!60, fill=red!5, very thick, minimum width=3cm,minimum height=1cm},
 ]
 %Nodes
-\node[squarednode] (1) {max = a;};
-\node[roundnode] (2) [below=of 1] {if (max < b)};
-\node[squarednode] (3) [below=of 2] { max = b;};
-\node[roundnode] (4)  [below=of 3] {print};
+\node[command] (1) {max = a;};
+\node[if_statement] (2) [below=of 1] {if (max < b)};
+\node[command] (3) [below=of 2] { max = b;};
+\node[if_statement] (4) [below=of 3] {if (max < c)};
+\node (2_ne) [right=of 3] {ne};
+\node (2_da) at ($(2)!0.6!(3)$) {da};
+\node[command] (5) [below=of 4] {max = c;};
+\node[command] (6)  [below=of 5] { printf("\%d\n", max); };
+\node (4_ne) [left=of 5] {ne};
+\node (4_da) at ($(4)!0.6!(5)$) {da};
+
 
 %Lines
-\draw[->] (2) -- +(4,0) -- +(4,0) node[midway, right] {test} |- (4); 
-%\draw[->] (2) -- +(4,0) --  (3.east) +(4,0) node[right]  {edge label 8} |- (4); 
-%\node [right,anchor=west]  at (n7-|d) {edge label 8} ;   
+\draw[->] (1) -- (2);
+\draw[->] (2) -| (2_ne) |- (4);
+\draw[->] (2) -- (2_da) -- (3);
+\draw[->] (3) -- (4);
+\draw[->] (4) -| (4_ne) |- (6);
+\draw[->] (4) -- (4_da) -- (5);
+\draw[->] (5) -- (6);
+%\draw[->] (2) -- +(4,0) -- +(4,0) node[midway, right] |- (4); 
+%\draw[->] (2) -| + (4,0) (3.east) + (4,0) node[right]  {edge label 8} |- (4); 
+%\node [right,anchor=west]  at  {edge label 8} ;   
 
 %\path[->] (2.west)  edge node {0}  (4.west) 
 % https://tikz.dev/tikz-arrows
@@ -108,31 +136,31 @@ squarednode/.style={rectangle, draw=red!60, fill=red!5, very thick, minimum widt
 
 
 
-\begin{tikzpicture}[y=1.5cm]
+%\begin{tikzpicture}[y=1.5cm]
+%
+%\begin{scope} [every node/.style={draw,circle}]
+%    \node (n4) at (2, -3) {4};
+%    \node (n5) at (2, -4) {5};
+%    \node (n6) at (1, -5) {6};
+%    \node (n7) at (3, -5) {7};
+%    \node (n8) at (1, -6) {8};
+%    \node (n9) at (3, -6) {9};
+%    \node (n10)at (2, -7) {10}; 
+%\end{scope}
+%
+%\begin{scope}[->,every node/.style={ right}]
+%  \draw (n4)-- node{lengthy edge label 1} (n5);
+%  \draw (n5)-- node[left] {lengthy edge label 2}(n6)  ;
+%  \draw (n5)-- node (c) {lengthy edge label 3}(n7) ;
+%  \draw (n6)-- node[left] {edge label 4}(n8)  ;
+%  \draw (n7)-- node {edge label 5}(n9)  ;
+%  \draw (n9)-- node {label 6}(n10) ;
+%  \draw (n8)-- node[left] {label 7}(n10) ;
+%\end{scope}
+%
+%\draw[->] (n10) -| (c.east) coordinate (d)  |-  (n4);
+%\node [right,anchor=west]  at (n7-|d) {edge label 8} ;   
 
-\begin{scope} [every node/.style={draw,circle}]
-    \node (n4) at (2, -3) {4};
-    \node (n5) at (2, -4) {5};
-    \node (n6) at (1, -5) {6};
-    \node (n7) at (3, -5) {7};
-    \node (n8) at (1, -6) {8};
-    \node (n9) at (3, -6) {9};
-    \node (n10)at (2, -7) {10}; 
-\end{scope}
-
-\begin{scope}[->,every node/.style={ right}]
-  \draw (n4)-- node{lengthy edge label 1} (n5);
-  \draw (n5)-- node[left] {lengthy edge label 2}(n6)  ;
-  \draw (n5)-- node (c) {lengthy edge label 3}(n7) ;
-  \draw (n6)-- node[left] {edge label 4}(n8)  ;
-  \draw (n7)-- node {edge label 5}(n9)  ;
-  \draw (n9)-- node {label 6}(n10) ;
-  \draw (n8)-- node[left] {label 7}(n10) ;
-\end{scope}
-
-\draw[->] (n10) -| (c.east) coordinate (d)  |-  (n4);
-\node [right,anchor=west]  at (n7-|d) {edge label 8} ;   
-
-\end{tikzpicture}
+%\end{tikzpicture}
 
 \end{document}
