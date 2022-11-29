@@ -72,7 +72,6 @@
 \listoffigures
 
 
-
 % 1)
 % 1. max = a;
 % 2. if (max < b) 
@@ -89,8 +88,8 @@
 
 \begin{tikzpicture}[
 shorten >=1pt,
-if_statement/.style={relationship, draw=green!60, fill=green!5, very thick, minimum size=0.2},
-command/.style={entity, draw=red!60, fill=red!5, very thick, minimum width=3cm,minimum height=1cm},
+if_statement/.style={relationship, draw=magenta!30, fill=magenta!5, very thick, minimum size=2cm},
+command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm,minimum height=1cm},
 ]
 %Nodes
 \node[command] (1) {max = a;};
@@ -129,7 +128,102 @@ command/.style={entity, draw=red!60, fill=red!5, very thick, minimum width=3cm,m
 
 \newpage
 
-% Pokrivenost
+
+
+% 2) 
+
+% if (a > 0) 
+% abs = a
+% else abs = b
+
+
+\begin{tikzpicture}[
+shorten >=1pt,
+if_statement/.style={relationship, draw=magenta!30, fill=magenta!5, very thick, minimum size=2cm},
+command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm,minimum height=1cm},
+]
+%Nodes
+\node[if_statement] (1) {if (a > 0)};
+\node[] (1_da) [right=of 1] {da};
+\node[] (1_ne) [left=of 1] {ne};
+\node[command] (2) [below right=of 1] {abs = a;};
+\node[command] (3) [below left=of 1] { abs = b;};
+
+
+%Lines
+\draw[->] (1) -- (1_da) -| (2);
+\draw[->] (1) -- (1_ne) -| (3);
+
+\end{tikzpicture}
+
+\newpage
+
+% 3) 
+
+% da li dodati while cvor neki? (tipa samo romb)
+
+\begin{tikzpicture}[
+shorten >=1pt,
+if_statement/.style={relationship, draw=magenta!30, fill=magenta!5, very thick, minimum size=2cm},
+command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm,minimum height=1cm},
+]
+%Nodes
+\node[command] (1) {sum = 0};
+\node[if_statement] (2) [below=of 1] {i <= 10};
+\node[if_statement] (3) [below=of 2] {i/2 == 0};
+\node[] (2_da) at ($(2)!0.5!(3)$) {da};
+\node[] (2_ne) [right=of 2] {ne};
+\node[command] (4) [below=of 3] {sum = sum + i;};
+\node[command] (5) [below=of 4] { i = i + 1;};
+\node[command] (6) [right=of 2_ne] {return sum;};
+\node[] (3_da) at ($(3)!0.6!(4)$) {da};
+\node[] (3_ne) [right=of 4] {ne};
+\node[] (while_node) [left=of 3] {};
+
+%Lines
+\draw[->] (1) -- (2);
+\draw[->] (2) -- (2_ne) -- (6);
+\draw[->] (2) -- (2_da) -- (3);
+\draw[->] (3) -- (3_da) -- (4);
+\draw[->] (3) -| (3_ne) |- (5);
+%\draw[->] (5) -| + (4,0) (3.east) + (4,0) node[right]  {edge label 8} |- (2); 
+\draw[->] (5) -| (while_node.west) |- (2); 
+\end{tikzpicture}
+
+\newpage
+
+% 4) faktorijel broja!
+
+
+\begin{tikzpicture}[
+shorten >=1pt,
+if_statement/.style={relationship, draw=magenta!30, fill=magenta!5, very thick, minimum size=2cm},
+command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm,minimum height=1cm},
+]
+%Nodes
+\node[command] (1) {sum = 1};
+\node[command] (2) [below=of 1] {scanf("\%d", \&n);};
+\node[if_statement] (3) [below=of 2] {n > 0};
+\node[] (3_da) at ($(3)!0.4!(4)$) {da};
+\node[] (3_ne) [right=of 3] {ne};
+\node[command] (4) [below=of 3] {sum = sum * n;};
+\node[command] (5) [below=of 4] { n = n - 1;};
+\node[command] (6) [right=of 3_ne] {return sum;};
+\node[] (while_node) [left=of 4] {};
+
+%Lines
+\draw[->] (1) -- (2);
+\draw[->] (2) -- (3);
+\draw[->] (3) -- (3_ne) -- (6);
+\draw[->] (3) -- (3_da) -- (4);
+\draw[->] (4) -- (5);
+\draw[->] (5) -| (while_node.west) |- (3); 
+
+\end{tikzpicture}
+
+\newpage
+
+% 5)
 % https://tex.stackexchange.com/questions/112412/connecting-nodes-with-brace-in-tikz
 % https://tikz.dev/tikz-arrows
 
