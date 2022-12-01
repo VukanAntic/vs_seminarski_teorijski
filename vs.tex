@@ -8,8 +8,13 @@
 \usepackage{graphicx}
 
 \usepackage{tikz}
+\usepackage{amssymb}
+
 \usetikzlibrary{positioning}
 \usetikzlibrary{calc}
+\usetikzlibrary{arrows}
+\usetikzlibrary{trees}
+
 
 \usetikzlibrary{shapes.geometric}
 
@@ -72,6 +77,13 @@
 \listoffigures
 
 
+
+\newcommand{\Cross}{$\mathbin{\tikz [x=1.4ex,y=1.4ex,line width=.2ex, red] \draw (0,0) -- (1,1) (0,1) -- (1,0);}$}
+
+\newcommand{\Checkmark}{$\color{green}\checkmark$}
+
+
+
 % 1)
 % 1. max = a;
 % 2. if (max < b) 
@@ -84,7 +96,7 @@
 % https://tex.stackexchange.com/questions/251642/draw-arrows-between-nodes-with-tikz
 % node distance=2cm
 
-\usetikzlibrary{er}
+\usetikzlibrary{er,calc,shapes.arrows,decorations.pathreplacing,shadows}
 
 \begin{tikzpicture}[
 shorten >=1pt,
@@ -166,6 +178,7 @@ command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm
 shorten >=1pt,
 if_statement/.style={relationship, draw=magenta!30, fill=magenta!5, very thick, minimum size=2cm},
 command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm,minimum height=1cm},
+while_statement/.style={relationship, very thick, minimum width=0.5cm,minimum height=0.5cm},
 ]
 %Nodes
 \node[command] (1) {sum = 0};
@@ -178,27 +191,30 @@ command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm
 \node[command] (6) [right=of 2_ne] {return sum;};
 \node[] (3_da) at ($(3)!0.6!(4)$) {da};
 \node[] (3_ne) [right=of 4] {ne};
-\node[] (while_node) [left=of 3] {};
+\node[] (while_helper) [left=of 3] {};
+\node[while_statement] (while) [below=of 5] {};
 
 %Lines
 \draw[->] (1) -- (2);
 \draw[->] (2) -- (2_ne) -- (6);
 \draw[->] (2) -- (2_da) -- (3);
 \draw[->] (3) -- (3_da) -- (4);
+\draw[->] (4) -- (5);
+\draw[->] (5) -- (while);
 \draw[->] (3) -| (3_ne) |- (5);
 %\draw[->] (5) -| + (4,0) (3.east) + (4,0) node[right]  {edge label 8} |- (2); 
-\draw[->] (5) -| (while_node.west) |- (2); 
+\draw[->] (while) -| (while_helper.west) |- (2); 
 \end{tikzpicture}
 
 \newpage
 
 % 4) faktorijel broja!
 
-
 \begin{tikzpicture}[
 shorten >=1pt,
 if_statement/.style={relationship, draw=magenta!30, fill=magenta!5, very thick, minimum size=2cm},
 command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm,minimum height=1cm},
+while_statement/.style={relationship, very thick, minimum width=0.5cm,minimum height=0.5cm},
 ]
 %Nodes
 \node[command] (1) {sum = 1};
@@ -209,7 +225,8 @@ command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm
 \node[command] (4) [below=of 3] {sum = sum * n;};
 \node[command] (5) [below=of 4] { n = n - 1;};
 \node[command] (6) [right=of 3_ne] {return sum;};
-\node[] (while_node) [left=of 4] {};
+\node[] (while_helper) [left=of 4] {};
+\node[while_statement] (while) [below=of 5] {};
 
 %Lines
 \draw[->] (1) -- (2);
@@ -217,7 +234,8 @@ command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm
 \draw[->] (3) -- (3_ne) -- (6);
 \draw[->] (3) -- (3_da) -- (4);
 \draw[->] (4) -- (5);
-\draw[->] (5) -| (while_node.west) |- (3); 
+\draw[->] (5) -- (while);
+\draw[->] (while) -| (while_helper.west) |- (3); 
 
 \end{tikzpicture}
 
@@ -249,39 +267,28 @@ myline/.style={dotted, cyan!40,->>, ultra thick},
 \draw[myline]  (4.west) to [bend right=40] (5.west);
 \draw[myline]  (4.east) to [bend left=40] (5.east);
 
+\end{tikzpicture}
 
+\newpage
 
+% 6) Moj test!
+
+\begin{tikzpicture}[
+shorten >=1pt,
+my arrow/.style={ single arrow, draw=cyan!40, fill=cyan!5, minimum height=0.5cm, minimum width=0.05cm, single arrow head extend=0.1cm},
+module/.style={rounded corners, draw=cyan!40, fill=cyan!5, minimum height=2cm, minimum width=4cm},
+checkmar/.style={checkmark, color=green, minimum height=2cm, minimum width=4cm},
+]
+
+\node[module] (1) {Program testing};
+\node[my arrow] (2) [right=of 1] {shows};
+\node[module] (3) [right=of 2] {presence of bugs};
+\node[module] (4) [below=of 3] {absence of bugs};
+\node[scale=4.0] at ([xshift=+2.0em]3.east)  {\Checkmark};
+\node[scale=4.0] at ([xshift=+2.0em]4.east)  {\Cross};
 
 
 \end{tikzpicture}
 
-
-
-%\begin{tikzpicture}[y=1.5cm]
-%
-%\begin{scope} [every node/.style={draw,circle}]
-%    \node (n4) at (2, -3) {4};
-%    \node (n5) at (2, -4) {5};
-%    \node (n6) at (1, -5) {6};
-%    \node (n7) at (3, -5) {7};
-%    \node (n8) at (1, -6) {8};
-%    \node (n9) at (3, -6) {9};
-%    \node (n10)at (2, -7) {10}; 
-%\end{scope}
-%
-%\begin{scope}[->,every node/.style={ right}]
-%  \draw (n4)-- node{lengthy edge label 1} (n5);
-%  \draw (n5)-- node[left] {lengthy edge label 2}(n6)  ;
-%  \draw (n5)-- node (c) {lengthy edge label 3}(n7) ;
-%  \draw (n6)-- node[left] {edge label 4}(n8)  ;
-%  \draw (n7)-- node {edge label 5}(n9)  ;
-%  \draw (n9)-- node {label 6}(n10) ;
-%  \draw (n8)-- node[left] {label 7}(n10) ;
-%\end{scope}
-%
-%\draw[->] (n10) -| (c.east) coordinate (d)  |-  (n4);
-%\node [right,anchor=west]  at (n7-|d) {edge label 8} ;   
-
-%\end{tikzpicture}
 
 \end{document}
