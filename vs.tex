@@ -66,13 +66,16 @@
 
 \begin{document}
 
-\title{Naslov seminarskog rada\\ \small{Seminarski rad u okviru kursa\\Metodologija stručnog i naučnog rada\\ Matematički fakultet}}
+\title{Testiranje 2\\ \small{Seminarski rad u okviru kursa\\Metodologija stručnog i naučnog rada\\ Matematički fakultet}}
 
-\author{Prvi autor, drugi autor, treći autor, četvrti autor\\ kontakt email prvog, drugog, trećeg, četvrtog autora}
+\author{Vukan Antić\\ vukanantic7@gmail.com}
 
 %\date{9.~april 2015.}
 
 \maketitle
+
+\tableofcontents
+
 
 \listoffigures
 
@@ -98,20 +101,37 @@
 
 \usetikzlibrary{er,calc,shapes.arrows,decorations.pathreplacing,shadows}
 
+\newpage
+
+\section{Prva slika}
+\label{sec:prva_slika}
+
+\begin{lstlisting} [language=c,numbers=none]
+max = a;
+if (max < b) {
+    max = b;
+}
+if (max < c) {
+    max = c;
+}
+printf("%d", max);
+
+\end{lstlisting}
+
 \begin{tikzpicture}[
 shorten >=1pt,
 if_statement/.style={relationship, draw=magenta!30, fill=magenta!5, very thick, minimum size=2cm},
 command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm,minimum height=1cm},
 ]
 %Nodes
-\node[command] (1) {max = a;};
-\node[if_statement] (2) [below=of 1] {if (max < b)};
-\node[command] (3) [below=of 2] { max = b;};
-\node[if_statement] (4) [below=of 3] {if (max < c)};
-\node (2_ne) [right=of 3] {ne};
+\node[command] (1) [label=above :$1$] {max = a;};
+\node[if_statement] (2) [below=of 1] [label=above right :$2$] {if (max < b)};
+\node[command] (3) [below=of 2] [label=above right :$3$] { max = b;};
+\node[if_statement] (4) [below=of 3] [label=above right :$4$] {if (max < c)};
+\node (2_ne) [right=of 3]  {ne};
 \node (2_da) at ($(2)!0.6!(3)$) {da};
-\node[command] (5) [below=of 4] {max = c;};
-\node[command] (6) [below=of 5] {printf("\%d\n", max);};
+\node[command] (5) [below=of 4] [label=above right :$5$] {max = c;};
+\node[command] (6) [below=of 5] [label=above right :$6$] {printf("\%d\n", max);};
 \node (4_ne) [left=of 5] {ne};
 \node (4_da) at ($(4)!0.6!(5)$) {da};
 
@@ -124,29 +144,27 @@ command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm
 \draw[->] (4) -| (4_ne) |- (6);
 \draw[->] (4) -- (4_da) -- (5);
 \draw[->] (5) -- (6);
-%\draw[->] (2) -- +(4,0) -- +(4,0) node[midway, right] |- (4); 
-%\draw[->] (2) -| + (4,0) (3.east) + (4,0) node[right]  {edge label 8} |- (4); 
-%\node [right,anchor=west]  at  {edge label 8} ;   
 
-%\path[->] (2.west)  edge node {0}  (4.west) 
-% https://tikz.dev/tikz-arrows
-
-%\draw[->]  (2.west) .. controls + (left:30mm) and +(down:7mm) .. (4.west);
-
-%\draw[->] (1) -- (2) {true};
-%\draw[->] (2) -- (3);
-%\draw[->] (3) .. controls +(down:17mm) and +(right:7mm) .. (4);
 \end{tikzpicture}
 
 \newpage
 
 
-
+\section{Druga slika}
+\label{sec:druga_slika}
 % 2) 
 
-% if (a > 0) 
-% abs = a
-% else abs = b
+\begin{lstlisting} [language=c,numbers=none]
+if (a > 0) {
+    abs = a;
+}
+else {
+    abs = b;
+}
+
+\end{lstlisting}
+
+
 
 
 \begin{tikzpicture}[
@@ -160,19 +178,35 @@ command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm
 \node[] (1_ne) [left=of 1] {ne};
 \node[command] (2) [below right=of 1] {abs = a;};
 \node[command] (3) [below left=of 1] { abs = b;};
-
+\node[] (izmedju_2_3) [below=of 2] at ($(2)!0.5!(3)$) ;
 
 %Lines
 \draw[->] (1) -- (1_da) -| (2);
 \draw[->] (1) -- (1_ne) -| (3);
+\draw[->] (2) |- (izmedju_2_3);
+\draw[->] (3) |- (izmedju_2_3);
+
 
 \end{tikzpicture}
 
 \newpage
-
 % 3) 
 
-% da li dodati while cvor neki? (tipa samo romb)
+\section{Treća slika}
+\label{sec:treca_slika}
+
+\begin{lstlisting} [language=c,numbers=none]
+sum = 0;
+while (i <= 10) {
+    if (i / 2 == 0) {
+        sum = sum + i;
+    }
+    i = i + 1;
+}
+return sum;
+
+\end{lstlisting}
+
 
 \begin{tikzpicture}[
 shorten >=1pt,
@@ -181,18 +215,18 @@ command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm
 while_statement/.style={relationship, very thick, minimum width=0.5cm,minimum height=0.5cm},
 ]
 %Nodes
-\node[command] (1) {sum = 0};
-\node[if_statement] (2) [below=of 1] {i <= 10};
-\node[if_statement] (3) [below=of 2] {i/2 == 0};
+\node[command] (1) [label=above :$1$] {sum = 0};
+\node[if_statement] (2) [below=of 1] [label=above right :$2$] {i <= 10};
+\node[if_statement] (3) [below=of 2] [label=above right :$3$] {i/2 == 0};
 \node[] (2_da) at ($(2)!0.5!(3)$) {da};
 \node[] (2_ne) [right=of 2] {ne};
-\node[command] (4) [below=of 3] {sum = sum + i;};
-\node[command] (5) [below=of 4] { i = i + 1;};
-\node[command] (6) [right=of 2_ne] {return sum;};
+\node[command] (4) [below=of 3] [label=above right :$4$] {sum = sum + i;};
+\node[command] (5) [below=of 4] [label=above right :$5$] { i = i + 1;};
+\node[command] (6) [right=of 2_ne] [label=above :$7$] {return sum;};
 \node[] (3_da) at ($(3)!0.6!(4)$) {da};
 \node[] (3_ne) [right=of 4] {ne};
 \node[] (while_helper) [left=of 3] {};
-\node[while_statement] (while) [below=of 5] {};
+\node[while_statement] (while) [label=above right :$6$] [below=of 5] {};
 
 %Lines
 \draw[->] (1) -- (2);
@@ -208,6 +242,20 @@ while_statement/.style={relationship, very thick, minimum width=0.5cm,minimum he
 
 \newpage
 
+\section{Četvrta slika}
+\label{sec:cetvrta_slika}
+
+\begin{lstlisting} [language=c,numbers=none]
+sum = 1;
+scanf("%d", &n);
+while (n > 0) {
+    sum = sum * n;
+    n = n - 1;
+}
+return sum;
+
+\end{lstlisting}
+
 % 4) faktorijel broja!
 
 \begin{tikzpicture}[
@@ -217,16 +265,16 @@ command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm
 while_statement/.style={relationship, very thick, minimum width=0.5cm,minimum height=0.5cm},
 ]
 %Nodes
-\node[command] (1) {sum = 1};
-\node[command] (2) [below=of 1] {scanf("\%d", \&n);};
-\node[if_statement] (3) [below=of 2] {n > 0};
+\node[command] (1) [label=above :$1$] {sum = 1};
+\node[command] (2) [below=of 1] [label=above right :$2$] {scanf("\%d", \&n);};
+\node[if_statement] (3) [below=of 2] [label=above right :$3$] {n > 0};
 \node[] (3_da) at ($(3)!0.4!(4)$) {da};
 \node[] (3_ne) [right=of 3] {ne};
-\node[command] (4) [below=of 3] {sum = sum * n;};
-\node[command] (5) [below=of 4] { n = n - 1;};
-\node[command] (6) [right=of 3_ne] {return sum;};
+\node[command] (4) [below=of 3] [label=above right :$4$] {sum = sum * n;};
+\node[command] (5) [below=of 4] [label=above right :$5$] { n = n - 1;};
+\node[command] (6) [right=of 3_ne] [label=above :$7$] {return sum;};
 \node[] (while_helper) [left=of 4] {};
-\node[while_statement] (while) [below=of 5] {};
+\node[while_statement] (while) [label=above right :$6$] [below=of 5] {};
 
 %Lines
 \draw[->] (1) -- (2);
@@ -240,6 +288,9 @@ while_statement/.style={relationship, very thick, minimum width=0.5cm,minimum he
 \end{tikzpicture}
 
 \newpage
+
+\section{Peta slika}
+\label{sec:peta_slika}
 
 % 5)
 % https://tex.stackexchange.com/questions/112412/connecting-nodes-with-brace-in-tikz
@@ -271,19 +322,23 @@ myline/.style={dotted, cyan!40,->>, ultra thick},
 
 \newpage
 
+\section{Šesta slika}
+\label{sec:sesta_slika}
+
 % 6) Moj test!
 
 \begin{tikzpicture}[
 shorten >=1pt,
-my arrow/.style={ single arrow, draw=cyan!40, fill=cyan!5, minimum height=0.5cm, minimum width=0.05cm, single arrow head extend=0.1cm},
+my arrow/.style={ single arrow, draw=cyan!40, fill=cyan!5, minimum height=0.5cm, minimum width=0.05cm, single arrow head extend=0.1cm, rotate=45},
 module/.style={rounded corners, draw=cyan!40, fill=cyan!5, minimum height=2cm, minimum width=4cm},
 checkmar/.style={checkmark, color=green, minimum height=2cm, minimum width=4cm},
 ]
 
-\node[module] (1) {Program testing};
-\node[my arrow] (2) [right=of 1] {shows};
-\node[module] (3) [right=of 2] {presence of bugs};
-\node[module] (4) [below=of 3] {absence of bugs};
+\node[module] (1) {Testiranje programa};
+\node[my arrow] (2) [right=of 1] [yshift=-0.5cm] {prikazuje};
+\node[] (helper) [right=of 2] [yshift=-0.5cm] {};
+\node[module] (3) [above right=of helper] [xshift=-1.5cm, yshift=-0.25cm] {prisustvo bagova};
+\node[module] (4) [below right=of helper] [xshift=-1.5cm, yshift=-0.25cm] {odsustvo bagova};
 \node[scale=4.0] at ([xshift=+2.0em]3.east)  {\Checkmark};
 \node[scale=4.0] at ([xshift=+2.0em]4.east)  {\Cross};
 
