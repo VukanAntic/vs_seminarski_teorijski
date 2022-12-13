@@ -77,15 +77,11 @@
 \tableofcontents
 
 
-\listoffigures
-
 
 
 \newcommand{\Cross}{$\mathbin{\tikz [x=1.4ex,y=1.4ex,line width=.2ex, red] \draw (0,0) -- (1,1) (0,1) -- (1,0);}$}
 
 \newcommand{\Checkmark}{$\color{green}\checkmark$}
-
-
 
 % 1)
 % 1. max = a;
@@ -124,7 +120,8 @@ if_statement/.style={relationship, draw=magenta!30, fill=magenta!5, very thick, 
 command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm,minimum height=1cm},
 ]
 %Nodes
-\node[command] (1) [label=above :$1$] {max = a;};
+\node[command] (1) [label=above right :$1$] {max = a;};
+\node[] (pocetak) [above=of 1] {};
 \node[if_statement] (2) [below=of 1] [label=above right :$2$] {if (max < b)};
 \node[command] (3) [below=of 2] [label=above right :$3$] { max = b;};
 \node[if_statement] (4) [below=of 3] [label=above right :$4$] {if (max < c)};
@@ -134,9 +131,12 @@ command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm
 \node[command] (6) [below=of 5] [label=above right :$6$] {printf("\%d\n", max);};
 \node (4_ne) [left=of 5] {ne};
 \node (4_da) at ($(4)!0.6!(5)$) {da};
+\node[] (kraj) [below=of 6] {};
+
 
 
 %Lines
+\draw[->] (pocetak) -- (1);
 \draw[->] (1) -- (2);
 \draw[->] (2) -| (2_ne) |- (4);
 \draw[->] (2) -- (2_da) -- (3);
@@ -144,6 +144,8 @@ command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm
 \draw[->] (4) -| (4_ne) |- (6);
 \draw[->] (4) -- (4_da) -- (5);
 \draw[->] (5) -- (6);
+\draw[->] (6) -- (kraj);
+
 
 \end{tikzpicture}
 
@@ -173,18 +175,23 @@ if_statement/.style={relationship, draw=magenta!30, fill=magenta!5, very thick, 
 command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm,minimum height=1cm},
 ]
 %Nodes
-\node[if_statement] (1) {if (a > 0)};
+\node[if_statement] (1) [label=above right :$1$] {if (a > 0)};
+\node[] (pocetak) [above=of 1] {};
 \node[] (1_da) [right=of 1] {da};
 \node[] (1_ne) [left=of 1] {ne};
-\node[command] (2) [below right=of 1] {abs = a;};
-\node[command] (3) [below left=of 1] { abs = b;};
-\node[] (izmedju_2_3) [below=of 2] at ($(2)!0.5!(3)$) ;
+\node[command] (2) [below right=of 1] [label=above right :$2$]  {abs = a;};
+\node[] (ispod_2) [below=of 2] {};
+\node[command] (3) [below left=of 1] [label=above right :$3$]  { abs = b;};
+\node[] (ispod_3) [below=of 3] {};
+\node[] (izmedju_2_3) at ($(ispod_2)!0.5!(ispod_3)$) [yshift=-1.5cm] {};
+
 
 %Lines
+\draw[->] (pocetak) -- (1);
 \draw[->] (1) -- (1_da) -| (2);
 \draw[->] (1) -- (1_ne) -| (3);
-\draw[->] (2) |- (izmedju_2_3);
-\draw[->] (3) |- (izmedju_2_3);
+\draw[->] (2) -- (ispod_2.north) -| (izmedju_2_3);
+\draw[->] (3) -- (ispod_3.north) -| (izmedju_2_3);
 
 
 \end{tikzpicture}
@@ -215,20 +222,23 @@ command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm
 while_statement/.style={relationship, very thick, minimum width=0.5cm,minimum height=0.5cm},
 ]
 %Nodes
-\node[command] (1) [label=above :$1$] {sum = 0};
+\node[command] (1) [label=above right :$1$] {sum = 0};
+\node[] (pocetak) [above=of 1] {};
 \node[if_statement] (2) [below=of 1] [label=above right :$2$] {i <= 10};
 \node[if_statement] (3) [below=of 2] [label=above right :$3$] {i/2 == 0};
 \node[] (2_da) at ($(2)!0.5!(3)$) {da};
 \node[] (2_ne) [right=of 2] {ne};
 \node[command] (4) [below=of 3] [label=above right :$4$] {sum = sum + i;};
 \node[command] (5) [below=of 4] [label=above right :$5$] { i = i + 1;};
-\node[command] (6) [right=of 2_ne] [label=above :$7$] {return sum;};
+\node[command] (6) [right=of 2_ne] [label=above right :$7$] {return sum;};
 \node[] (3_da) at ($(3)!0.6!(4)$) {da};
 \node[] (3_ne) [right=of 4] {ne};
 \node[] (while_helper) [left=of 3] {};
 \node[while_statement] (while) [label=above right :$6$] [below=of 5] {};
+\node[] (kraj) [below=of 6] {};
 
 %Lines
+\draw[->] (pocetak) -- (1);
 \draw[->] (1) -- (2);
 \draw[->] (2) -- (2_ne) -- (6);
 \draw[->] (2) -- (2_da) -- (3);
@@ -237,7 +247,9 @@ while_statement/.style={relationship, very thick, minimum width=0.5cm,minimum he
 \draw[->] (5) -- (while);
 \draw[->] (3) -| (3_ne) |- (5);
 %\draw[->] (5) -| + (4,0) (3.east) + (4,0) node[right]  {edge label 8} |- (2); 
-\draw[->] (while) -| (while_helper.west) |- (2); 
+\draw[->] (while) -| (while_helper.west) |- (2);
+\draw[->] (6) -- (kraj);
+
 \end{tikzpicture}
 
 \newpage
@@ -265,18 +277,21 @@ command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm
 while_statement/.style={relationship, very thick, minimum width=0.5cm,minimum height=0.5cm},
 ]
 %Nodes
-\node[command] (1) [label=above :$1$] {sum = 1};
+\node[command] (1) [label=above right :$1$] {sum = 1};
+\node[] (pocetak) [above=of 1] {};
 \node[command] (2) [below=of 1] [label=above right :$2$] {scanf("\%d", \&n);};
 \node[if_statement] (3) [below=of 2] [label=above right :$3$] {n > 0};
 \node[] (3_da) at ($(3)!0.4!(4)$) {da};
 \node[] (3_ne) [right=of 3] {ne};
 \node[command] (4) [below=of 3] [label=above right :$4$] {sum = sum * n;};
 \node[command] (5) [below=of 4] [label=above right :$5$] { n = n - 1;};
-\node[command] (6) [right=of 3_ne] [label=above :$7$] {return sum;};
+\node[command] (6) [right=of 3_ne] [label=above right :$7$] {return sum;};
 \node[] (while_helper) [left=of 4] {};
 \node[while_statement] (while) [label=above right :$6$] [below=of 5] {};
+\node[] (kraj) [below=of 6] {};
 
 %Lines
+\draw[->] (pocetak) -- (1);
 \draw[->] (1) -- (2);
 \draw[->] (2) -- (3);
 \draw[->] (3) -- (3_ne) -- (6);
@@ -284,6 +299,7 @@ while_statement/.style={relationship, very thick, minimum width=0.5cm,minimum he
 \draw[->] (4) -- (5);
 \draw[->] (5) -- (while);
 \draw[->] (while) -| (while_helper.west) |- (3); 
+\draw[->] (6) -- (kraj);
 
 \end{tikzpicture}
 
