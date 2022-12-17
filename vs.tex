@@ -173,6 +173,7 @@ else {
 shorten >=1pt,
 if_statement/.style={relationship, draw=magenta!30, fill=magenta!5, very thick, minimum size=2cm},
 command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm,minimum height=1cm},
+while_statement/.style={relationship, very thick, minimum width=0.5cm,minimum height=0.5cm},
 ]
 %Nodes
 \node[if_statement] (1) [label=above right :$1$] {if (a > 0)};
@@ -183,15 +184,17 @@ command/.style={entity, draw=cyan!40, fill=cyan!5, very thick, minimum width=3cm
 \node[] (ispod_2) [below=of 2] {};
 \node[command] (3) [below left=of 1] [label=above right :$3$]  { abs = b;};
 \node[] (ispod_3) [below=of 3] {};
-\node[] (izmedju_2_3) at ($(ispod_2)!0.5!(ispod_3)$) [yshift=-1.5cm] {};
+\node[while_statement] (izmedju_2_3) at ($(ispod_2)!0.5!(ispod_3)$) {};
+\node[] (kraj) at ($(ispod_2)!0.5!(ispod_3)$) [yshift=-1.5cm] {};
 
 
 %Lines
 \draw[->] (pocetak) -- (1);
 \draw[->] (1) -- (1_da) -| (2);
 \draw[->] (1) -- (1_ne) -| (3);
-\draw[->] (2) -- (ispod_2.north) -| (izmedju_2_3);
-\draw[->] (3) -- (ispod_3.north) -| (izmedju_2_3);
+\draw[->] (2) -- (2) |- (izmedju_2_3);
+\draw[->] (3) -- (3) |- (izmedju_2_3);
+\draw[->] (izmedju_2_3) -- (kraj);
 
 
 \end{tikzpicture}
